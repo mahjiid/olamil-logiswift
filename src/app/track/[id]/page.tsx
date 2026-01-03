@@ -1,14 +1,16 @@
-import { notFound } from "next/navigation"
+"use client"
+
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import Map from "@/components/maps" // Dynamic wrapper
 import TrackingTimeline from "@/components/tracking-timeline"
-import { CheckCircle2, Circle, Truck, MapPin, Package } from "lucide-react"
+import { CheckCircle2, Circle, Truck, MapPin, Package, AlertCircle } from "lucide-react"
+import { useEffect, useState } from "react"
+import { supabase } from "@/lib/supabase"
+import { useParams } from "next/navigation"
 
-// Mock data function
-function getShipment(id: string) {
-  // In a real app, fetch from API
-  return {
+// Mock data as fallback
+const mockShipment = (id: string) => ({
     id,
     origin: "Lagos, NG",
     destination: "Abuja, NG",
@@ -21,12 +23,77 @@ function getShipment(id: string) {
       { status: "Out for Delivery", location: "Abuja Hub", time: null, completed: false },
       { status: "Delivered", location: "Customer Address", time: null, completed: false },
     ]
-  }
-}
+})
 
-export default async function TrackingPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const shipment = getShipment(id)
+export default function TrackingPage() {
+  const params = useParams()
+  const id = params?.id as string
+  const [shipment, setShipment] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [usingDemo, setUsingDemo] = useState(false)
+
+  useEffect(() => {
+    async function fetchShipment() {
+      if (!id) return
+
+      try {
+        const { data, error } = await supabase
+          .from('shipments')
+          .select('*')
+          .eq('tracking_id', id)
+          .single()
+
+        if (error || !data) {
+          console.warn("Using demo data due to error:", error)
+          setShipment(mockShipment(id))
+          setUsingDemo(true)
+        } else {
+          // Transform DB data to UI format if needed
+          setShipment({
+              ...data,
+              // If timeline is JSON in DB, use it directly, else mock or parse
+              timeline: data.timeline || mockShipment(id).timeline
+          })
+        }
+      } catch (e) {
+         setShipment(mockShipment(id))
+         setUsingDemo(true)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchShipment()
+    
+    // Subscribe to realtime updates
+    const channel = supabase
+      .channel('shipment_updates')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'shipments', filter: `tracking_id=eq.${id}` },
+        (payload) => {
+           console.log("Realtime update:", payload)
+           setShipment((prev: any) => ({ ...prev, ...payload.new }))
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [id])
+
+  if (loading) {
+      return (
+          <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1 flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              </main>
+              <Footer />
+          </div>
+      )
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -36,6 +103,12 @@ export default async function TrackingPage({ params }: { params: Promise<{ id: s
           <div className="mb-8">
             <h1 className="text-3xl font-bold">Tracking: <span className="text-primary">{id}</span></h1>
             <p className="text-muted-foreground">Detailed status of your shipment.</p>
+            {usingDemo && (
+                <div className="mt-4 p-3 bg-yellow-50 text-yellow-800 rounded-lg flex items-center gap-2 text-sm border border-yellow-200">
+                    <AlertCircle className="h-4 w-4" />
+                    <span>Database not connected. Showing demo data.</span>
+                </div>
+            )}
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">

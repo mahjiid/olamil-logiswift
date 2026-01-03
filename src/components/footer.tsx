@@ -6,8 +6,10 @@ import Logo from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import { useAuth } from "@/context/auth-context"
 
 export default function Footer() {
+  const { user } = useAuth()
   const [email, setEmail] = useState("")
   const [subscribed, setSubscribed] = useState(false)
 
@@ -58,6 +60,9 @@ export default function Footer() {
             <li><Link href="/contact" className="hover:text-white hover:translate-x-1 transition-all inline-block">Contact Support</Link></li>
             <li><Link href="/privacy" className="hover:text-white hover:translate-x-1 transition-all inline-block">Privacy Policy</Link></li>
             <li><Link href="/terms" className="hover:text-white hover:translate-x-1 transition-all inline-block">Terms of Service</Link></li>
+            {user?.email === "olamilo55@gmail.com" && (
+                <li><Link href="/admin" className="hover:text-white hover:translate-x-1 transition-all inline-block opacity-50 hover:opacity-100">Staff Login</Link></li>
+            )}
           </ul>
         </div>
         

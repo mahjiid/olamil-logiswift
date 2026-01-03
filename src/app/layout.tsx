@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/auth-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +16,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "OlamilLogiSwift - Premium Logistics",
   description: "Seamless delivery and tracking across Nigeria",
+  openGraph: {
+    title: "OlamilLogiSwift",
+    description: "Fast, reliable logistics across Nigeria. Book your shipment today.",
+    url: "https://olamil-logiswift.netlify.app", // Replace with actual URL
+    siteName: "OlamilLogiSwift",
+    locale: "en_NG",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -27,7 +36,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

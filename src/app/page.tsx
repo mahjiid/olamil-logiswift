@@ -9,6 +9,8 @@ import Footer from "@/components/footer"
 import Map from "@/components/maps" // Dynamic wrapper
 import HeroSlideshow from "@/components/hero-slideshow"
 import { motion } from "framer-motion"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -26,6 +28,15 @@ const staggerContainer = {
 
 
 export default function Home() {
+  const [trackingId, setTrackingId] = useState("")
+  const router = useRouter()
+
+  const handleTrack = () => {
+    if (trackingId.trim()) {
+      router.push(`/track/${trackingId}`)
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -72,8 +83,14 @@ export default function Home() {
                 transition={{ delay: 0.4 }}
                 className="w-full max-w-md p-2 bg-background/95 backdrop-blur rounded-lg shadow-xl border flex gap-2"
               >
-                <Input placeholder="Enter Tracking ID (e.g. LGS-12345)" className="border-0 shadow-none focus-visible:ring-0 bg-transparent" />
-                <Button>Track</Button>
+                <Input 
+                  placeholder="Enter Tracking ID (e.g. LGS-12345)" 
+                  className="border-0 shadow-none focus-visible:ring-0 bg-transparent"
+                  value={trackingId}
+                  onChange={(e) => setTrackingId(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleTrack()}
+                />
+                <Button onClick={handleTrack}>Track</Button>
               </motion.div>
               
               <motion.div 
@@ -167,8 +184,8 @@ export default function Home() {
               <Button size="lg" variant="secondary" className="font-bold" asChild>
                 <Link href="/book">Get Started</Link>
               </Button>
-              <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
-                Contact Sales
+              <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10" asChild>
+                <Link href="/contact">Contact Sales</Link>
               </Button>
             </div>
           </div>

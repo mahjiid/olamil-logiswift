@@ -10,24 +10,24 @@ import { useState } from "react"
 import { useAuth } from "@/context/auth-context"
 import { useRouter } from "next/navigation"
 
-export default function LoginPage() {
-  const { signIn } = useAuth()
+export default function RegisterPage() {
+  const { signUp } = useAuth()
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     
-    // Attempt sign in with Supabase
-    const { error } = await signIn(email, password)
+    const { error } = await signUp(email, password)
     
     if (error) {
-      alert("Login failed: " + (error.message || "Unknown error"))
+      alert("Registration failed: " + (error.message || "Unknown error"))
     } else {
-      router.push('/')
+      alert("Registration successful! Please check your email to verify your account.")
+      router.push('/login')
     }
     setIsLoading(false)
   }
@@ -41,13 +41,13 @@ export default function LoginPage() {
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
               <Truck className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl font-bold">Welcome Back</h1>
+            <h1 className="text-2xl font-bold">Create Account</h1>
             <p className="text-muted-foreground text-center">
-              Login to manage your shipments and view tracking history.
+              Sign up to start shipping and tracking with OlamilLogiSwift.
             </p>
           </div>
           
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleRegister} className="space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Email</label>
               <Input 
@@ -59,27 +59,25 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <div className="flex justify-between">
-                <label className="text-sm font-medium">Password</label>
-                <Link href="#" className="text-xs text-primary hover:underline">Forgot password?</Link>
-              </div>
+              <label className="text-sm font-medium">Password</label>
               <Input 
                 type="password" 
-                placeholder="••••••••" 
+                placeholder="Create a password" 
                 required 
+                minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             
             <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? "Creating account..." : "Sign Up"}
             </Button>
             
             <div className="text-center text-sm">
-              <span className="text-muted-foreground">Don't have an account? </span>
-              <Link href="/register" className="text-primary hover:underline font-medium">
-                Create account
+              <span className="text-muted-foreground">Already have an account? </span>
+              <Link href="/login" className="text-primary hover:underline font-medium">
+                Log in
               </Link>
             </div>
           </form>
