@@ -1,44 +1,32 @@
-import { Resend } from 'resend'
+import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+/**
+ * Server-side email sender. Never expose Resend credentials to a client bundle.
+ * Booking/payment pages still require a trusted server endpoint for mail triggers.
+ */
+export async function sendEmail(to: string, subject: string, html: string) {
+  if (typeof window !== "undefined") {
+    return { success: false, error: "Email must be triggered by an authenticated server action." };
+  }
 
-export async function sendEmail(
-    to: string, 
-    subject: string, 
-    html: string
-) {
-    if (process.env.RESEND_API_KEY) {
-        try {
-            await resend.emails.send({
-                from: 'OlamilLogiswift <noreply@resend.dev>', // Change to your domain in prod
-                to,
-                subject,
-                html
-            })
-            console.log("✅ Email sent via Resend")
-            return { success: true }
-        } catch (error) {
-            console.error("❌ Resend Error:", error)
-            return { success: false, error }
-        }
+  const key = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (!key || !from) {
+    return { success: false, error: "Transactional email has not been configured." };
+  }
+
+  try {
+    const resend = new Resend(key);
+    const { error } = await resend.emails.send({ from, to, subject, html });
+    if (error) {
+      console.error("Transactional email provider rejected the request.");
+      return { success: false, error: "Email provider rejected the request." };
     }
-
-    // Fallback to Mock
-    console.log(`
-    📨 --- SENDING MOCK EMAIL (No API Key) ---
-    TO: ${to}
-    SUBJECT: ${subject}
-    CONTENT: 
-    ${html.replace(/<[^>]*>?/gm, '')} // Strip HTML for console
-    ------------------------------------------
-    `)
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            console.log("✅ Email sent successfully (Mock)")
-            resolve({ success: true })
-        }, 1000)
-    })
+    return { success: true };
+  } catch {
+    console.error("Transactional email delivery failed.");
+    return { success: false, error: "Email delivery failed." };
+  }
 }
 
 export function generateBookingEmail(trackingId: string, name: string) {
