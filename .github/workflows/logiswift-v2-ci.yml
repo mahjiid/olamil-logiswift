@@ -4,6 +4,7 @@ on:
     branches: [feature/logiswift-v2-customer]
     paths:
       - "src/app/v2/**"
+      - "src/app/pay/**"
       - "src/components/v2/**"
       - "src/styles/logiswift-v2.css"
       - "src/styles/logiswift-tokens.css"
@@ -13,6 +14,7 @@ on:
   pull_request:
     paths:
       - "src/app/v2/**"
+      - "src/app/pay/**"
       - "src/components/v2/**"
       - "src/styles/logiswift-v2.css"
       - "src/styles/logiswift-tokens.css"
