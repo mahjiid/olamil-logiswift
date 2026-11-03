@@ -1,8 +1,8 @@
-# LogiSwift 2.0 — Design system and experience principles
+# ZAIOLA Delivery — Design system and experience principles
 
 **Design decision:** Option C is the next milestone after the product brief.  
 **Status:** Design foundations / concept screens; not a production release.  
-**Brand:** LogiSwift (working name).  
+**Customer-facing brand:** **ZAIOLA Delivery**; the parent identity is **ZAIOLA**. `olamil-logiswift` and LogiSwift 2.0 remain internal project/repository names during migration.  
 **Core concept:** **Quiet Momentum** — editorial clarity for customers, field-first execution for drivers, operational density for dispatchers.
 
 ## 1. Product principles
@@ -17,7 +17,7 @@
 
 ## 2. Brand and design grammar
 
-**Working wordmark:** lowercase `logiswift.` with a compact L route-mark. The mark is a placeholder concept requiring final vector engineering and trademark screening.
+**Working wordmark:** uppercase `ZAIOLA.` with a small `DELIVERY` descriptor and a compact custom Z mark. Use the wordmark consistently on customer, driver and operations surfaces. This remains a proposed mark pending vector refinement and trademark screening.
 
 **Visual motif:** route junction, endpoint and delivery state. Never a generic 3D package illustration.
 
