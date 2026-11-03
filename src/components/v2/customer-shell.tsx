@@ -1,11 +1,15 @@
 import Link from "next/link";
+import { BRAND } from "@/lib/brand";
 import { ArrowUpRight, PackageCheck } from "lucide-react";
 
 export function Brand({ inverse = false }: { inverse?: boolean }) {
   return (
-    <Link href="/v2" className={`ls-brand ${inverse ? "ls-brand--inverse" : ""}`} aria-label="LogiSwift home">
-      <span className="ls-brand__mark" aria-hidden="true"><span>l</span><span className="ls-brand__dot" /></span>
-      <span>logiswift<span className="ls-brand__period">.</span></span>
+    <Link href="/v2" className={`ls-brand ${inverse ? "ls-brand--inverse" : ""}`} aria-label={`${BRAND.productName} home`}>
+      <span className="ls-brand__mark" aria-hidden="true"><span>Z</span><span className="ls-brand__dot" /></span>
+      <span className="ls-brand__wordmark">
+        <strong>{BRAND.wordmark}<span className="ls-brand__period">.</span></strong>
+        <small>{BRAND.descriptor}</small>
+      </span>
     </Link>
   );
 }
@@ -44,7 +48,7 @@ export function CustomerFooter() {
           <span>Customer experience preview · No live orders</span>
         </div>
       </div>
-      <div className="ls-container ls-footer__bottom"><span>© {new Date().getFullYear()} LogiSwift</span><span>Deliver with clarity.</span></div>
+      <div className="ls-container ls-footer__bottom"><span>© {new Date().getFullYear()} {BRAND.productName}</span><span>Deliver with clarity.</span></div>
     </footer>
   );
 }
