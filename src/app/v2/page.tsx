@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BRAND } from "@/lib/brand";
 import { ArrowRight, ArrowUpRight, Check, Clock3, MapPin, Package, ShieldCheck, Truck } from "lucide-react";
 import { CustomerFooter, CustomerHeader, StepNumber } from "@/components/v2/customer-shell";
 import { QuickStart } from "@/components/v2/quick-start";
@@ -19,7 +20,7 @@ export default function CustomerHomeV2() {
                 <span><Check size={16} /> Delivery updates</span>
                 <span><Check size={16} /> Verified handover</span>
               </div>
-              <div className="ls-hero__index"><span>01 — 03</span><span>LOGISWIFT / CUSTOMER</span></div>
+              <div className="ls-hero__index"><span>01 — 03</span><span>ZAIOLA / DELIVERY</span></div>
             </div>
             <div className="ls-hero__visual">
               <div className="ls-city-art" aria-hidden="true">
@@ -39,7 +40,7 @@ export default function CustomerHomeV2() {
           </div>
           <div className="ls-hero__bottom-line" />
         </section>
-        <section className="ls-service-strip" aria-label="Explore LogiSwift">
+        <section className="ls-service-strip" aria-label={`Explore ${BRAND.productName}`}>
           <div className="ls-container ls-service-grid">
             <Link href="/v2/book" className="ls-service-item">
               <div className="ls-service-item__top"><StepNumber number="01 / INDIVIDUAL" /><ArrowUpRight size={19}/></div>
@@ -74,7 +75,7 @@ export default function CustomerHomeV2() {
             <div className="ls-business__copy">
               <span className="ls-kicker ls-kicker--warm">MADE FOR THE EVERYDAY</span>
               <h2>Deliveries should support your business. <em>Not slow it down.</em></h2>
-              <p>Whether you sell online or send supplies between locations, LogiSwift is being designed to give your team one dependable workflow.</p>
+              <p>Whether you sell online or send supplies between locations, ZAIOLA Delivery is being designed to give your team one dependable workflow.</p>
               <Link href="/v2/book" className="ls-text-link">Explore delivery booking <ArrowRight size={19}/></Link>
             </div>
             <div className="ls-business__panel" aria-label="Example business delivery flow">
