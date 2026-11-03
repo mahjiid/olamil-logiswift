@@ -1,0 +1,38 @@
+name: LogiSwift V2 customer checks
+on:
+  push:
+    branches: [feature/logiswift-v2-customer]
+    paths:
+      - "src/app/v2/**"
+      - "src/components/v2/**"
+      - "src/styles/logiswift-v2.css"
+      - "src/styles/logiswift-tokens.css"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/logiswift-v2-ci.yml"
+  pull_request:
+    paths:
+      - "src/app/v2/**"
+      - "src/components/v2/**"
+      - "src/styles/logiswift-v2.css"
+      - "src/styles/logiswift-tokens.css"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/logiswift-v2-ci.yml"
+jobs:
+  typecheck-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co"
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "local-preview-nonsecret"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx tsc --noEmit
+      - run: npm run build
