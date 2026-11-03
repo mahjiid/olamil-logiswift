@@ -33,6 +33,6 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-      - run: npm ci --no-audit --no-fund
+      - run: npm ci --legacy-peer-deps --no-audit --no-fund # TEMP: legacy react-paystack@6 incompatible with React 19
       - run: npx tsc --noEmit
       - run: npm run build
