@@ -1,4 +1,6 @@
-# LogiSwift 2.0 — Customer Web Sprint 1
+# ZAIOLA Delivery — Customer Web Sprint 1
+
+**Customer-facing product brand:** ZAIOLA Delivery. **GitHub codebase:** `mahjiid/olamil-logiswift` (unchanged). The LogiSwift code/project identifier is not the public display name.
 
 ## Reviewable routes
 
