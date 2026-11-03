@@ -1,0 +1,17 @@
+/* LogiSwift 2.0 visual tokens — not yet imported by production styles */
+:root{
+--ls-ink:#17201e;--ls-ink-secondary:#31403c;--ls-limestone:#f7f7f2;
+--ls-surface:#ffffff;--ls-border:#e2e5df;--ls-muted:#73817b;
+--ls-brand:#c34325;--ls-brand-hover:#a8371f;--ls-brand-soft:#fff0ea;
+--ls-success:#17634c;--ls-success-soft:#e9f5ee;
+--ls-warning:#8d6108;--ls-warning-soft:#fff4dd;
+--ls-danger:#b42318;--ls-info:#2167a3;--ls-focus:#3674c8;
+--ls-radius-control:8px;--ls-radius-panel:12px;--ls-radius-feature:16px;
+--ls-radius-sheet:22px;--ls-font-body:'DM Sans',system-ui,sans-serif;
+--ls-font-mono:'IBM Plex Mono',ui-monospace,monospace;
+--ls-duration-fast:120ms;--ls-duration-default:200ms;
+--ls-space-1:4px;--ls-space-2:8px;--ls-space-3:12px;--ls-space-4:16px;
+--ls-space-5:20px;--ls-space-6:24px;--ls-space-8:32px;--ls-space-10:40px;
+--ls-space-12:48px;--ls-space-16:64px;
+}
+@media(prefers-reduced-motion:reduce){:root{--ls-duration-fast:0ms;--ls-duration-default:0ms}}
