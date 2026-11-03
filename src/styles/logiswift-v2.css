@@ -1,4 +1,4 @@
-/* LogiSwift 2.0 — isolated customer experience.
+/* ZAIOLA Delivery — isolated customer experience.
    Intentionally scoped to .ls2 to keep the existing application untouched. */
 .ls2{
   --ls-ink:#17201e;--ls-subtle:#62716b;--ls-warm:#c34325;--ls-warm-hover:#a7371e;
@@ -17,10 +17,10 @@
 .ls-header{position:relative;z-index:5;background:#fff;border-bottom:1px solid var(--ls-line)}
 .ls-header__inner{height:86px;display:flex;align-items:center;justify-content:space-between;gap:28px}
 .ls-brand{display:inline-flex;align-items:center;gap:10px;font-size:24px;letter-spacing:-1.4px;font-weight:790;white-space:nowrap}
-.ls-brand__mark{height:37px;width:37px;display:inline-flex;align-items:center;justify-content:center;position:relative;background:var(--ls-ink);color:#fff;border-radius:10px 12px 10px 12px;font-size:30px;font-weight:650;line-height:1;transform:rotate(-8deg)}
-.ls-brand__mark>span:first-child{transform:rotate(8deg);margin-top:-7px}
+.ls-brand__mark{height:39px;width:39px;display:inline-flex;align-items:center;justify-content:center;position:relative;background:var(--ls-ink);color:#fff;border-radius:10px 12px 10px 12px;font-size:23px;font-weight:850;line-height:1;transform:rotate(-8deg);letter-spacing:-1px}
+.ls-brand__mark>span:first-child{transform:rotate(8deg);margin-top:0}
 .ls-brand__dot{width:5px;height:5px;border-radius:50%;background:var(--ls-warm);position:absolute;right:-3px;top:3px}
-.ls-brand__period{color:var(--ls-warm)}
+.ls-brand__wordmark{display:flex;flex-direction:column;gap:3px;line-height:1;letter-spacing:0}.ls-brand__wordmark strong{font-size:21px;font-weight:850;letter-spacing:1.2px}.ls-brand__wordmark small{font-size:8px;font-weight:850;letter-spacing:3.2px;color:#76847c}.ls-brand__period{color:var(--ls-warm)}
 .ls-header__links{display:flex;align-items:center;gap:38px;color:#43504b;font-size:14px;font-weight:650}
 .ls-header__links a:hover,.ls-header__small-link:hover{color:var(--ls-warm)}
 .ls-header__small-link{display:flex;gap:9px;align-items:center;font-weight:650;color:#44544e;font-size:14px}
@@ -137,7 +137,7 @@
 .ls-final-cta .ls-button{margin-bottom:16px}
 .ls-footer{background:#141e1b;color:#c2cec5}
 .ls-footer__main{display:flex;justify-content:space-between;gap:32px;align-items:flex-start;padding:60px 0 70px}
-.ls-brand--inverse{color:#fff!important}
+.ls-brand--inverse{color:#fff!important}.ls-brand--inverse .ls-brand__wordmark small{color:#aab9ae}
 .ls-brand--inverse .ls-brand__mark{background:#f1f1e9;color:#15211c}
 .ls-footer__main p{font-size:14px;color:#94a69b;margin:16px 0}
 .ls-footer__aside{display:flex;flex-direction:column;gap:12px;font-size:12px;text-align:right;color:#9bab9e}
@@ -235,7 +235,7 @@
 @media (max-width:520px){
  .ls-container{width:min(100% - 32px,460px)}
  .ls-brand{font-size:21px}
- .ls-brand__mark{height:32px;width:32px;font-size:27px}
+ .ls-brand__mark{height:34px;width:34px;font-size:21px}.ls-brand__wordmark strong{font-size:17px}.ls-brand__wordmark small{font-size:7px;letter-spacing:2.6px}
  .ls-header__cta{font-size:12px;padding:9px 11px;gap:7px}
  .ls-header__small-link{font-size:12px}
  .ls-hero__copy{padding:57px 0 45px}
