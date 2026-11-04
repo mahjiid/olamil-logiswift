@@ -1,0 +1,35 @@
+name: ZAIOLA customer mobile checks
+on:
+  push:
+    branches:
+      - feature/zaiola-customer-mobile
+    paths:
+      - "apps/customer-mobile/**"
+      - "tsconfig.json"
+      - ".github/workflows/zaiola-customer-mobile-ci.yml"
+  pull_request:
+    paths:
+      - "apps/customer-mobile/**"
+      - "tsconfig.json"
+      - ".github/workflows/zaiola-customer-mobile-ci.yml"
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/customer-mobile
+    env:
+      CI: "1"
+      EXPO_NO_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install native app dependencies
+        run: npm install --no-audit --no-fund
+      - name: Typecheck app
+        run: npx tsc --noEmit
+      - name: Export Android JS bundle
+        run: npx expo export --platform android
