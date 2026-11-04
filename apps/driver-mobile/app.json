@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "ZAIOLA Driver",
+    "slug": "zaiola-driver",
+    "scheme": "zaioladriver",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "backgroundColor": "#F6F7F3",
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "backgroundColor": "#19251F"
+      }
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "previewOnly": true
+    }
+  }
+}
