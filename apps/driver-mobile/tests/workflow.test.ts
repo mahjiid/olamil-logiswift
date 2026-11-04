@@ -22,7 +22,7 @@ test("ordered training stages require explicit valid verification",()=>{
  ] as const){
   const result=advanceTraining(current,event,code);
   assert.equal(result.ok,true,event);
-  if(!result.ok)throw Error(result.error);
+  if(!result.ok)throw Error("Training transition unexpectedly rejected");
   assert.equal(result.state.stage,next);
   current=result.state;
  }
@@ -46,7 +46,7 @@ test("pickup and recipient PINs cannot be bypassed",()=>{
 test("declining ends the example and blocks further transitions",()=>{
  const declined=advanceTraining(INITIAL_TRAINING,"decline");
  assert.equal(declined.ok,true);
- if(!declined.ok)throw Error(declined.error);
+ if(!declined.ok)throw Error("Training decline unexpectedly rejected");
  assert.equal(declined.state.stage,"declined");
  assert.equal(advanceTraining(declined.state,"accept").ok,false);
 });
