@@ -1,9 +1,10 @@
 import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import type { ColorValue } from "react-native";
 import { colors } from "../../src/theme";
 type IconName=keyof typeof Ionicons.glyphMap;
 function tabIcon(name:IconName,active:IconName) {
- return ({color,focused}:{color:string;focused:boolean})=><Ionicons name={focused?active:name} size={22} color={color}/>;
+ return ({color,focused}:{color:ColorValue;focused:boolean;size:number})=><Ionicons name={focused?active:name} size={22} color={color}/>;
 }
 export default function TabLayout() {
  return <Tabs screenOptions={{
