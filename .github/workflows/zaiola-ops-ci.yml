@@ -1,0 +1,44 @@
+name: ZAIOLA operations command center checks
+on:
+  push:
+    branches: [feature/zaiola-operations-command-center]
+    paths:
+      - "src/app/v2/ops/**"
+      - "src/app/api/v2/ops/**"
+      - "src/components/v2/operations-dashboard.tsx"
+      - "src/lib/ops-*.ts"
+      - "src/styles/zaiola-ops.css"
+      - "tests/ops-model.test.mjs"
+      - "docs/database/PROPOSED_zaiola_operations.sql"
+      - ".github/workflows/zaiola-ops-ci.yml"
+  pull_request:
+    paths:
+      - "src/app/v2/ops/**"
+      - "src/app/api/v2/ops/**"
+      - "src/components/v2/operations-dashboard.tsx"
+      - "src/lib/ops-*.ts"
+      - "src/styles/zaiola-ops.css"
+      - "tests/ops-model.test.mjs"
+      - "docs/database/PROPOSED_zaiola_operations.sql"
+      - ".github/workflows/zaiola-ops-ci.yml"
+jobs:
+  web-operations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co"
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "local-preview-nonsecret"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "22",cache: npm}
+      # Pre-existing react-paystack 6 peer incompatibility, tracked in issue #3.
+      - run: npm ci --legacy-peer-deps --no-audit --no-fund
+      - name: Check dispatch projection and status grouping
+        run: node --experimental-strip-types --test tests/ops-model.test.mjs
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Production build
+        run: npm run build
