@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "ZAIOLA Delivery",
+    "slug": "zaiola-delivery",
+    "scheme": "zaioladelivery",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "backgroundColor": "#F7F7F2",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "backgroundColor": "#17201E"
+      }
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "previewOnly": true
+    }
+  }
+}
