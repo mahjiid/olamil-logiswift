@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { DraftProvider } from "../src/state/draft";
+import { colors } from "../src/theme";
 export default function RootLayout() {
  return <SafeAreaProvider><DraftProvider>
    <StatusBar barStyle="dark-content"/>
