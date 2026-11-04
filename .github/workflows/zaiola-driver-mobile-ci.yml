@@ -1,0 +1,36 @@
+name: ZAIOLA driver app checks
+on:
+  push:
+    branches: [feature/zaiola-driver-mobile]
+    paths:
+      - "apps/driver-mobile/**"
+      - "tsconfig.json"
+      - ".github/workflows/zaiola-driver-mobile-ci.yml"
+  pull_request:
+    paths:
+      - "apps/driver-mobile/**"
+      - "tsconfig.json"
+      - ".github/workflows/zaiola-driver-mobile-ci.yml"
+jobs:
+  native-driver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/driver-mobile
+    env:
+      CI: "1"
+      EXPO_NO_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install app dependencies
+        run: npm install --no-audit --no-fund
+      - name: Verify lifecycle gates and PIN checks
+        run: npm test
+      - name: Typecheck native screens
+        run: npx tsc --noEmit
+      - name: Export Android JavaScript bundle
+        run: npx expo export --platform android
