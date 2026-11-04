@@ -1,0 +1,47 @@
+name: ZAIOLA secure draft foundation
+on:
+  push:
+    branches: [feature/zaiola-secure-customer-drafts]
+  pull_request:
+    paths:
+      - "src/app/api/v2/**"
+      - "src/lib/v2-drafts.ts"
+      - "apps/customer-mobile/**"
+      - "docs/database/**"
+      - "tests/v2-drafts.test.mjs"
+      - ".github/workflows/zaiola-drafts-foundation-ci.yml"
+jobs:
+  web-and-api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co"
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "not-a-real-key"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "22",cache: npm}
+      # Pre-existing legacy react-paystack 6 peer conflict, tracked in issue #3.
+      - run: npm ci --legacy-peer-deps --no-audit --no-fund
+      - run: node --experimental-strip-types --test tests/v2-drafts.test.mjs
+      - run: npx tsc --noEmit
+      - run: npm run build
+  native-customer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/customer-mobile
+    env:
+      CI: "1"
+      EXPO_NO_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npx tsc --noEmit
+      - run: npx expo export --platform android
