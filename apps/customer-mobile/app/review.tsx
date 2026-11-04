@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Action, Eyebrow, Panel } from "../src/components/ui";
 import { useDraft } from "../src/state/draft";
+import { useCustomerAuth } from "../src/state/auth";
+import { bookingApiConfigured, createDraftRequestKey, saveCustomerDraft } from "../src/lib/draft-api";
 import { colors } from "../src/theme";
 import { summarize, validateStage } from "../src/lib/booking";
 
@@ -12,6 +14,26 @@ export default function Review() {
  const router=useRouter();
  const {draft,clear}=useDraft();
  const [complete,setComplete]=useState(false);
+ const {user,loading,getAccessToken}=useCustomerAuth();
+ const requestKey=useRef(createDraftRequestKey()).current;
+ const [saving,setSaving]=useState(false);
+ const [saveMessage,setSaveMessage]=useState("");
+ const [savedId,setSavedId]=useState<string|null>(null);
+ async function saveToAccount() {
+  if(saving||!user)return;
+  setSaving(true);setSaveMessage("");
+  try {
+    const token=await getAccessToken();
+    if(!token){setSaveMessage("Please sign in again before saving.");return;}
+    const result=await saveCustomerDraft(draft,token,requestKey);
+    if(!result.ok){setSaveMessage(result.message);return;}
+    setSavedId(result.receipt.id);
+    setComplete(true);
+  } catch {
+    setSaveMessage("Could not save draft. No delivery has been booked.");
+  } finally {setSaving(false);}
+ }
+
  const issue=validateStage(1,draft)||validateStage(2,draft);
  const data=issue?null:summarize(draft);
  function exit() {
@@ -28,9 +50,9 @@ export default function Review() {
    <ScrollView contentContainerStyle={styles.content}>
     {complete ? <>
       <View style={styles.icon}><Ionicons name="checkmark" size={29} color={colors.success}/></View>
-      <Eyebrow>PREVIEW COMPLETE</Eyebrow>
-      <Text style={styles.title}>Your draft is ready.</Text>
-      <Text style={styles.lead}>You've reviewed the details. This is <Text style={{fontWeight:"800"}}>not</Text> a delivery booking or a stored order. No rider has been assigned and no payment was collected.</Text>
+      <Eyebrow>{savedId?"SAVED TO ACCOUNT":"PREVIEW COMPLETE"}</Eyebrow>
+      <Text style={styles.title}>{savedId?"Draft saved securely.":"Your draft is ready."}</Text>
+      <Text style={styles.lead}>{savedId?"Your draft has been stored against your signed-in account.":"You've reviewed the details."} This is <Text style={{fontWeight:"800"}}>not</Text> a confirmed delivery booking. No rider has been assigned and no payment was collected.{savedId?" Draft reference: "+savedId:""}</Text>
       <Panel><Text style={styles.boxTitle}>What happens when booking goes live?</Text>
        <Text style={styles.muted}>Serviceability and vehicle suitability will be verified, an authoritative quote will be shown, and secure payment will be confirmed before dispatch.</Text></Panel>
       <Action title="Back to home" onPress={()=>router.replace("/")}/>
@@ -51,7 +73,12 @@ export default function Review() {
        <Panel style={{gap:18}}><Row label="Name" value={data.recipient}/><View style={styles.rule}/><Row label="Phone" value={data.phone??"Invalid"}/>{draft.notes.trim()?<><View style={styles.rule}/><Row label="Notes" value={draft.notes.trim()}/></>:null}</Panel>
       </View>
       <View style={styles.notice}><Ionicons name="alert-circle-outline" size={23} color="#8A6228"/><Text style={styles.noticeText}><Text style={{fontWeight:"800"}}>No live quote available.</Text>{"\n"}This prototype cannot place orders, accept payments, assign drivers or calculate verified delivery rates.</Text></View>
-      <Action title="Finish preview" onPress={()=>setComplete(true)}/>
+      {!loading && user && bookingApiConfigured() ?
+        <Action title={saving?"Saving securely…":"Save draft to my account"} onPress={saveToAccount} disabled={saving}/>
+        :<View style={{gap:7}}><Text style={styles.muted}>To save this draft to your account, sign in and connect an approved booking API. You can still finish the preview without saving.</Text>
+          {!user?<Action kind="secondary" title="Go to account" icon="person-outline" onPress={()=>router.push("/account")}/>:null}</View>}
+      {saveMessage?<View style={styles.notice} accessibilityRole="alert"><Ionicons name="alert-circle-outline" size={20} color={colors.error}/><Text style={styles.noticeText}>{saveMessage}</Text></View>:null}
+      <Action title="Finish preview without saving" kind="secondary" icon="checkmark-outline" onPress={()=>setComplete(true)}/>
       <Action kind="secondary" title="Edit details" icon="create-outline" onPress={()=>router.back()}/>
     </>:null}
    </ScrollView>
