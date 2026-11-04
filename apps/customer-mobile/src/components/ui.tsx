@@ -35,7 +35,7 @@ export function TextField({label,value,onChangeText,placeholder,keyboardType,aut
 export function Eyebrow({children}:{children:ReactNode}) {return <Text style={styles.eyebrow}>{children}</Text>;}
 export function ScreenTitle({title,sub}:{title:string;sub?:string}) {return <View style={{gap:8}}><Text style={styles.heading}>{title}</Text>{sub?<Text style={styles.sub}>{sub}</Text>:null}</View>;}
 export function InfoState({icon,title,body}:{icon:keyof typeof Ionicons.glyphMap;title:string;body:string}) {
- return <Panel style={{padding:25,alignItems:"flex-start",gap:12}}><View style={styles.infoIcon}><Ionicons name={icon} size={23} color={colors.orange}/></View><Text style={{fontSize:19,fontWeight:"750",color:colors.ink}}>{title}</Text><Text style={styles.sub}>{body}</Text></Panel>;
+ return <Panel style={{padding:25,alignItems:"flex-start",gap:12}}><View style={styles.infoIcon}><Ionicons name={icon} size={23} color={colors.orange}/></View><Text style={{fontSize:19,fontWeight:"700",color:colors.ink}}>{title}</Text><Text style={styles.sub}>{body}</Text></Panel>;
 }
 const styles=StyleSheet.create({
  brand:{flexDirection:"row",alignItems:"center",gap:9},
@@ -47,9 +47,9 @@ const styles=StyleSheet.create({
  action:{minHeight:56,borderRadius:radii.control,backgroundColor:colors.orange,paddingHorizontal:19,flexDirection:"row",alignItems:"center",justifyContent:"space-between",gap:14},
  actionDark:{backgroundColor:colors.ink},
  actionSecondary:{backgroundColor:"#FFFFFF",borderWidth:1,borderColor:colors.border},
- actionText:{fontSize:15,fontWeight:"750",color:"#FFFFFF"},
+ actionText:{fontSize:15,fontWeight:"700",color:"#FFFFFF"},
  panel:{backgroundColor:colors.paper,borderColor:colors.border,borderWidth:1,borderRadius:radii.panel,padding:18},
- fieldLabel:{color:colors.inkSoft,fontWeight:"750",fontSize:12},
+ fieldLabel:{color:colors.inkSoft,fontWeight:"700",fontSize:12},
  field:{backgroundColor:"#FBFCF9",borderColor:"#CAD5CD",borderWidth:1,borderRadius:radii.control,minHeight:52,paddingHorizontal:14,fontSize:15,color:colors.ink},
  eyebrow:{fontSize:10,fontWeight:"800",letterSpacing:2,color:colors.orange},
  heading:{fontSize:30,fontWeight:"800",color:colors.ink,letterSpacing:-1.2,lineHeight:36},
