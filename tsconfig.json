@@ -38,6 +38,7 @@
   ],
   "exclude": [
     "node_modules",
-    "apps/customer-mobile/**"
+    "apps/customer-mobile/**",
+    "apps/driver-mobile/**"
   ]
 }
