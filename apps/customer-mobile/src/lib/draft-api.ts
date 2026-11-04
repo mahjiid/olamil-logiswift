@@ -41,3 +41,30 @@ export async function saveCustomerDraft(draft:Draft,token:string,requestKey:stri
 }
 /** A fresh idempotency key per logical draft; reuse for retries of the same payload. */
 export function createDraftRequestKey(){return randomUUID();}
+
+export type SavedDraft = {
+ id:string;created_at:string;pickup:string;dropoff:string;vehicle:string;parcel_type:string;
+ weight_kg:number;recipient_name:string;
+};
+export async function listCustomerDrafts(token:string):Promise<
+ {ok:true;drafts:SavedDraft[]}|{ok:false;message:string}
+> {
+ if(!bookingApiConfigured())return{ok:false,message:"Draft history is not connected yet."};
+ if(!token)return{ok:false,message:"Please sign in to view your drafts."};
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+ try {
+  const response=await fetch((base||"").replace(/\/+$/,"")+"/api/v2/drafts",{
+   headers:{"Authorization":`Bearer ${token}`},signal:controller.signal
+  });
+  if(response.status===401)return{ok:false,message:"Session expired. Please sign in again."};
+  if(!response.ok)return{ok:false,message:"Draft history is temporarily unavailable."};
+  const json:unknown=await response.json();
+  if(!json||typeof json!=="object"||!("drafts" in json))return{ok:false,message:"Invalid server response."};
+  const value=(json as {drafts:unknown}).drafts;
+  if(!Array.isArray(value))return{ok:false,message:"Invalid draft list."};
+  return{ok:true,drafts:value.filter((v):v is SavedDraft=>
+   !!v&&typeof v==="object"&&typeof v.id==="string"&&typeof v.pickup==="string"&&typeof v.dropoff==="string"
+  ).slice(0,15)};
+ }catch{return{ok:false,message:"Connection unavailable. Try again."};}
+ finally{clearTimeout(timer);}
+}
