@@ -53,7 +53,7 @@ export async function POST(request:Request) {
       .insert(input).select(FIELDS).single();
     if(error){
       if(isConflict(error)) {
-        const existing=await a.client.from("zaiola_customer_drafts").select(FIELDS+",idempotency_key")
+        const existing=await a.client.from("zaiola_customer_drafts").select("id,pickup,dropoff,vehicle,parcel_type,weight_kg,recipient_name,recipient_phone,notes,created_at,idempotency_key")
           .eq("user_id",a.userId).eq("idempotency_key",parsed.data.idempotency_key).maybeSingle();
         if(existing.error||!existing.data)return errorResponse("Unable to retrieve prior draft",409);
         const x=existing.data;
