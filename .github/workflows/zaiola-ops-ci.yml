@@ -4,22 +4,26 @@ on:
     branches: [feature/zaiola-operations-command-center]
     paths:
       - "src/app/v2/ops/**"
+      - "src/app/admin/page.tsx"
       - "src/app/api/v2/ops/**"
       - "src/components/v2/operations-dashboard.tsx"
       - "src/lib/ops-*.ts"
       - "src/styles/zaiola-ops.css"
       - "tests/ops-model.test.mjs"
       - "docs/database/PROPOSED_zaiola_operations.sql"
+      - "docs/design/OPERATIONS_SPRINT.md"
       - ".github/workflows/zaiola-ops-ci.yml"
   pull_request:
     paths:
       - "src/app/v2/ops/**"
+      - "src/app/admin/page.tsx"
       - "src/app/api/v2/ops/**"
       - "src/components/v2/operations-dashboard.tsx"
       - "src/lib/ops-*.ts"
       - "src/styles/zaiola-ops.css"
       - "tests/ops-model.test.mjs"
       - "docs/database/PROPOSED_zaiola_operations.sql"
+      - "docs/design/OPERATIONS_SPRINT.md"
       - ".github/workflows/zaiola-ops-ci.yml"
 jobs:
   web-operations:
